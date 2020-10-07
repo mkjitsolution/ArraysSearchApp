@@ -1,0 +1,108 @@
+package p7;
+
+import java.util.Scanner;
+/*
+ Note : area of further upgrade
+ 1) Application does not support the work flow when element is not in the list .
+ 2) Application only breaks the list in four parts ,it should be based on the size of list.
+*/
+public class SearchApp {
+
+	int arr[] = {1,2,54,78,12,69,89,36,43,38,10,17,98,71,11,8,58,40};
+	
+	public static void main(String[] args) {
+		
+		while(true)
+		{
+			System.out.println("Enter element to search");
+			int x = new Scanner(System.in).nextInt();
+			
+			if(x!=0) {
+				new SearchApp().searchElement(x);
+			}
+			else break;
+		}
+	}
+	
+	public void searchElement(int ele)
+	{
+		int pos = 0;
+		
+		final int MAX_LEN = arr.length;
+		final int MID = MAX_LEN/2; //9
+		final int MID_LEFT = MID/2; //4
+		final int MID_RIGHT = (MID+MAX_LEN)/2; //13
+		
+		/*
+		  Important:-
+		 This is how we declare and initialize variables
+		  |<----- Range of arr ---------->| [variable names] 
+		  0  			to		mid_left  , [a,b]
+		  mid_left  	to		mid         [c,d]
+		  mid			to 		mid_right    [x,y]
+		  mid_right		to 		max_length  	[p,q] 
+		 */
+		
+		int a = 0;  // 0
+		int b = MID_LEFT;  //4
+		int c = MID_LEFT+1;//5
+		int d = MID;//9
+		int x = MID+1;//10
+		int y = MID_RIGHT;//13
+		int p = MID_RIGHT+1;//14
+		int q = MAX_LEN-1;//17
+		
+		int iteration = 0;
+		boolean found = false;
+		
+		
+		while(true)
+		{
+			iteration++;
+			
+			boolean firstBlockResult = false;
+			boolean secondBlockResult = false;
+			boolean thirdBlockResult= false;
+			boolean fourthBlockResult= false;
+			
+			if(a<=b)firstBlockResult = firstBlock(a++, b--,ele);
+			if(c<=d)secondBlockResult = secondBlock(c++, d--,ele);
+			if(x<=y)thirdBlockResult = thirdBlock(x++, y--,ele);
+			if(p<=q)fourthBlockResult = fourthBlock(p++, q--,ele);
+			
+			if(firstBlockResult ||
+					secondBlockResult ||
+					thirdBlockResult ||
+					fourthBlockResult)
+			{
+				found = true;
+				System.out.println("Element found within "+iteration+" iterations");
+				System.out.println("*********************************\n");
+				break;
+			}
+		}//end while
+		
+		if(!found) System.out.println("Element not in the list");
+		
+	}//end main
+	
+		
+	public boolean firstBlock(int a,int b,int ele)
+	{
+		return (arr[a] == ele || arr[b] == ele);
+	}
+	public boolean secondBlock(int c,int d,int ele)
+	{
+		return (arr[c] == ele || arr[d] == ele);
+	}
+	public boolean thirdBlock(int x,int y,int ele)
+	{
+		return (arr[x] == ele || arr[y] == ele);
+	}
+	public boolean fourthBlock(int p,int q,int ele)
+	{
+		return (arr[p] == ele || arr[q] == ele);
+	}
+	
+	
+}
